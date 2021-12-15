@@ -11,11 +11,11 @@ class Post extends Model
     use HasFactory;
 
     public function category(){
-        return $this->hasOne('App\Categories');
+        return $this->hasOne('App\Models\Categories');
 
     }
     public function comments(){
-        return $this->hasMany('app\Comments');
+        return $this->hasMany('App\Models\Comments');
     }
     public function noOfComments(){
 

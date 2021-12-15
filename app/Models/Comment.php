@@ -9,11 +9,11 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public function userID(){
-        return $this->hasOne('App\User');
+    public function user(){
+        return $this->hasOne('App\Models\User');
     }
-    public function postID(){
-        return $this->hasOne('App\Post');
+    public function post(){
+        return $this->hasOne('App\Models\Post');
     }
 
 
