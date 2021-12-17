@@ -14,12 +14,13 @@
         @endauth
     </div>
 @endif
-@endsection
+
+
 @section('content')
     <p> Posts:</p>
     <ul>
         @foreach ($posts as $post)
-            <li> <a href="{{ route('posts.show', [ 'id' => $post->id ]) }}"> {{$post->post_title}} </a></li>
+            <li> <a href="{{ route('comments.index', ['id' => $post->id ]) }}"> {{$post->post_title}} </a></li>
         @endforeach
     </ul>
-@endsection
+

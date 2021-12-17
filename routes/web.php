@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use app\Http\Controllers;
@@ -14,16 +15,11 @@ use app\Http\Controllers;
 |
 */
 
-Route::get('/',[PostController::class, 'index'] );
 
-Route::get('/topics/posts/{id}',[PostController::class, 'show'])
-    ->name('posts.show');
-Route::get('/topics/posts/{id}', [CommentController::class, 'index'])
-    ->name('comments.show');
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/topics/posts/{id}', [CommentController::class, 'index'])->name('comments.index');
+Route::get('/',[PostController::class, 'index'] )->name('posts.index');
+Route::get('/topic/posts/new', [PostController::class, 'create'])->name('posts.create');
+Route::post('/', [PostController::class, 'store'])->name('posts.store');
+Route::get('/dashboard', [PostController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

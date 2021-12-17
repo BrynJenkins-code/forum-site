@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-{{$comments = App\Models\Comment::where('post_id', $post->id)->get();}}
+
 
 @section('header')
 @if (Route::has('login'))
@@ -18,28 +18,57 @@
 @endsection
 
 @section('content')
+
     <script src=https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <ul>
-        <li>{{$post->post_title}}</li>
-        <li>{{$post->post_content}}</li>
-        <li>{{$post->views}}</li>
-    </ul>
-    <div id="commentForm">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    </div>
 
-    <ul>
 
-        @foreach ($comments as $comment)
-            <li>{{$comment->comment}}</li>
-        @endforeach
-    </ul>
     <script>
         var app = new Vue((
-            el:"commentForm",
+            el:"#root",
             data:{
-                message:""
-        }
-        ))
+                comments: [],
+                newComment:"",
+                postIid: 0,
+                userId: 0,
+            },
+            methods: {
+                function postComment(){
+            axios.post("{{ route('api.comments.store')}}",{
+                    comment:this.newComment,
+                    postId: this.postId,
+                    userId: this.userId
+                })
+                .then(response=>{
+                    this.comments.push(response.data.newComment);
+                    this.newComment='';
+                    this.postId = {postId};
+                    this.userId = {userId};
+                })
+                .catch(response=>{
+                    console.log(response);
+                })
+            }
+            }
+            mounted(){
+    axios.get("(( route ('api.comments.index') ))")
+                .then(response => {
+                    this.comments = response.data;
+                })
+                .catch(response => {
+                    console.log(response);
+                })
+            }
+        ));
     </script>
+    <div id="root">
+        Comment: <input type="text" id="input"
+                        v-model="newComment">
+        <button onclick="postComment()"> Post</button>
+
+        <ul>
+            <li v-for="comment in comments"> @{{ comment.comment }} </li>
+        </ul>
+    </div>
 @endsection

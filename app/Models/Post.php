@@ -10,6 +10,23 @@ class Post extends Model
 {
     use HasFactory;
 
+    /**
+     * @var mixed
+     */
+    private $post_title;
+    /**
+     * @var mixed
+     */
+    private $user_id;
+    /**
+     * @var mixed
+     */
+    private $category_id;
+    /**
+     * @var mixed
+     */
+    private $post_content;
+
     public function category(){
         return $this->hasOne('App\Models\Categories');
 

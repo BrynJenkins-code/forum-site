@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 
 class PostController extends Controller
@@ -19,6 +21,12 @@ class PostController extends Controller
         return view('welcome', ['posts' => $posts]);
     }
 
+    public function dashboard()
+    {
+        $id = Auth::id();
+        $posts = Post::where('user_id', $id)->get();
+        return view('dashboard', ['posts' => $posts]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -26,18 +34,28 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Categories::all();
+        return view('Topics.Posts.create', ['categories' => $categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $id = Auth::id();
+        $p = new Post();
+        $p->user_id = $id;
+        $p->post_title = $request['post_title'];
+        $p->post_content = $request['post_body'];
+        $p->category_id = $request['category_id'];
+        $p->views = 0;
+        $p->save();
+
+        return route('dashboard');
     }
 
     /**
